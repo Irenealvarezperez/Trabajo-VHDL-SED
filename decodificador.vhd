@@ -7,7 +7,7 @@ ENTITY decodificador IS
         long_opcion:positive:=3
     );
     PORT (
-        seleccion : IN std_logic_vector(long_opcion -1 DOWNTO 0);
+        seleccion : IN std_logic;
         salida_disp0 : OUT std_logic_vector(6 DOWNTO 0);
         salida_disp1: OUT std_logic_vector(6 DOWNTO 0);
         salida_disp2 : OUT std_logic_vector(6 DOWNTO 0);
