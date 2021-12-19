@@ -7,19 +7,19 @@ ENTITY decodificador IS
         long_opcion:positive:=3
     );
     PORT (
-        seleccion : IN std_logic_vector(long_opcion -1 DOWNTO 0);
-        salida_disp0 : OUT std_logic_vector(6 DOWNTO 0);
-        salida_disp1: OUT std_logic_vector(6 DOWNTO 0);
-        salida_disp2 : OUT std_logic_vector(6 DOWNTO 0);
-        salida_disp3 : OUT std_logic_vector(6 DOWNTO 0);
-        salida_disp4 : OUT std_logic_vector(6 DOWNTO 0);
-        salida_disp5 : OUT std_logic_vector(6 DOWNTO 0);
-        salida_disp6 : OUT std_logic_vector(6 DOWNTO 0);
-        salida_disp7 : OUT std_logic_vector(6 DOWNTO 0)
+        seleccion : in std_logic_vector(long_opcion -1 downto 0);
+        salida_disp0 : OUT std_logic_vector(6 downto 0);
+        salida_disp1: out std_logic_vector(6 downto 0);
+        salida_disp2 : out std_logic_vector(6 downto 0);
+        salida_disp3 : out std_logic_vector(6 downto 0);
+        salida_disp4 : out std_logic_vector(6 downto 0);
+        salida_disp5 : out std_logic_vector(6 downto 0);
+        salida_disp6 : out std_logic_vector(6 downto 0);
+        salida_disp7 : out std_logic_vector(6 downto 0)
     );
 END ENTITY decodificador;
 ARCHITECTURE behavioral OF decodificador IS
-BEGIN
+BEGin
     process(seleccion)
     begin
         case seleccion is
