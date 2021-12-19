@@ -4,10 +4,23 @@ use ieee.numeric_std.ALL;
 ENTITY decodificador_tb IS
 END decodificador_tb;
 ARCHITECTURE BEHAVIORAL OF decodificador_tb IS
+
+    constant reloj_periodo: time :=20 ns;
+    constant long_opcion:positive:=3;
+    SIGNAL seleccion : std_logic_vector(long_opcion -1 DOWNTO 0);
+    SIGNAL salida_disp0 : std_logic_vector(6 DOWNTO 0);
+    SIGNAL salida_disp1 : std_logic_vector(6 DOWNTO 0);
+    SIGNAL salida_disp2 : std_logic_vector(6 DOWNTO 0);
+    SIGNAL salida_disp3 : std_logic_vector(6 DOWNTO 0);
+    SIGNAL salida_disp4 : std_logic_vector(6 DOWNTO 0);
+    SIGNAL salida_disp5 : std_logic_vector(6 DOWNTO 0);
+    SIGNAL salida_disp6 : std_logic_vector(6 DOWNTO 0);
+    SIGNAL salida_disp7 : std_logic_vector(6 DOWNTO 0);
+
     COMPONENT decodificador
 
         PORT(
-            seleccion : IN std_logic;
+            seleccion : IN std_logic_vector(long_opcion -1 DOWNTO 0);
             salida_disp0 : OUT std_logic_vector(6 DOWNTO 0);
             salida_disp1: OUT std_logic_vector(6 DOWNTO 0);
             salida_disp2 : OUT std_logic_vector(6 DOWNTO 0);
@@ -18,17 +31,7 @@ ARCHITECTURE BEHAVIORAL OF decodificador_tb IS
             salida_disp7 : OUT std_logic_vector(6 DOWNTO 0)
         );
     END COMPONENT;
-    constant reloj_periodo: time := 2 sec;
-    constant long_opcion:positive:=5;
-    SIGNAL seleccion : std_logic;
-    SIGNAL salida_disp0 : std_logic_vector(6 DOWNTO 0);
-    SIGNAL salida_disp1 : std_logic_vector(6 DOWNTO 0);
-    SIGNAL salida_disp2 : std_logic_vector(6 DOWNTO 0);
-    SIGNAL salida_disp3 : std_logic_vector(6 DOWNTO 0);
-    SIGNAL salida_disp4 : std_logic_vector(6 DOWNTO 0);
-    SIGNAL salida_disp5 : std_logic_vector(6 DOWNTO 0);
-    SIGNAL salida_disp6 : std_logic_vector(6 DOWNTO 0);
-    SIGNAL salida_disp7 : std_logic_vector(6 DOWNTO 0);
+
 
 BEGIN
     uut: decodificador PORT MAP(
@@ -44,18 +47,18 @@ BEGIN
         );
     tb: PROCESS
     BEGIN
-        seleccion<= std_logic(1);
+        seleccion<= "001";
         wait for 2*reloj_periodo;
-        seleccion<=std_logic(2);
+        seleccion<="010";
         wait for 2*reloj_periodo;
-        seleccion<=std_logic(3);
+        seleccion<="011";
         wait for 2*reloj_periodo;
-        seleccion<=std_logic(4);
+        seleccion<="100";
         wait for 2*reloj_periodo;
-        seleccion<=std_logic(5);
+        seleccion<="101";
         wait for 2*reloj_periodo;
-        --seleccion<=std_logic(6);
-       -- wait for 2*reloj_periodo;
+        seleccion<="110";
+        wait for 2*reloj_periodo;
         ASSERT false
         REPORT "Simulacin finalizada. Test superado."
         SEVERITY FAILURE;
