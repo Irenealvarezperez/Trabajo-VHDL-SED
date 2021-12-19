@@ -66,10 +66,15 @@ begin
  stimuli:process
  begin
  wait until reset='1';
- 
- wait until clk='1';
  start<='1';
- delay<=to_unsigned(30-2, delay'length);
+ wait for CLK_PERIOD*2;
+ delay<=to_unsigned(5-2, delay'length);
+wait for CLK_PERIOD;
+ start<='0';
+
+ 
+
+
  wait for 100*CLK_PERIOD;
   	assert false
   	report "[SUCCESS]: Simulation finished."
