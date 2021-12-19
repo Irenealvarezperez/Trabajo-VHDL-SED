@@ -65,12 +65,15 @@ begin
  
  stimuli:process
  begin
+ start<='0';
+ delay<=(others=>'0');
  wait until reset='1';
  start<='1';
  wait for CLK_PERIOD*2;
  delay<=to_unsigned(5-2, delay'length);
 wait for CLK_PERIOD;
  start<='0';
+ delay<=(others=>'0');
 
  
 
