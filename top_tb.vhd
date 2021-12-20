@@ -37,6 +37,7 @@ end top_tb;
 
 
 architecture Behavioral of top_tb is
+constant num_entradas:positive:=2;
  signal entradas: std_logic_vector (num_entradas downto 0);
  signal sel_leche: std_logic;
   signal sel_azucar: std_logic;
