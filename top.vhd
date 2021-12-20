@@ -129,7 +129,7 @@ architecture Behavioral of top is
 begin
         digctrl<=(others=>'0');
     Inst_sincronizador: sincronizador port map(
-            CLK => clk_salida,
+            CLK => clk_salida,--clk_entrada
             SYNC_IN => boton_inicio,
             SYNC_OUT => sinc_detector
         );
@@ -139,13 +139,13 @@ begin
        clk_out => clk_salida
        );
     Inst_detector_flanco: detector_flanco port map(
-            CLK =>clk_salida,
+            CLK =>clk_salida, --clk_entrada
             EDGE_IN =>sinc_detector,
             EDGE_OUT =>detector_fsm1
         );
     Inst_fsm1: fsm1 port map(
             RESET => reset_global,
-            CLK => clk_salida,
+            CLK => clk_salida, --clk_entrada
             EDGE => detector_fsm1,
             MODOS => entradas,
             SEL_LECHE => sel_leche,
