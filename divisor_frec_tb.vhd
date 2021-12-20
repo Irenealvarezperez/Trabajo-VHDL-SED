@@ -36,10 +36,13 @@ entity divisor_frec_tb is
 end divisor_frec_tb;
 
 architecture Behavioral of divisor_frec_tb is
-    signal Reset: std_logic;
-    signal CLK_in: std_logic;
+    signal Reset: std_logic :='0';
+    signal CLK_in: std_logic:='0';
     signal CLK_out: std_logic;
     component divisor_frec is
+    	generic ( 
+	   freq : integer := 10000000
+	);
         port (
             clk_in : in  std_logic; -- 100 MHz
             reset : in  std_logic;
@@ -48,21 +51,40 @@ architecture Behavioral of divisor_frec_tb is
     end component;
     constant k: time := 10 ns;
 begin
-    uut: divisor_frec port map (reset, CLK_in,CLK_out);
+   uut_clk_divider: divisor_frec
+    generic map ( freq => 50000000) -- 1 Hz
+	--generic map ( 
+	   --freq => 125000 -- 400 Hz
+	--) 
+	port map (
+        clk_in => clk_in, -- 100 MHz
+        reset => reset,
+        clk_out => clk_out
+    );
 
-    Reset <= '1' after 0.25 * k, '0' after 0.75 * k;
-
-    p0: process
+    clkgen_100MHz: process
     begin
-        CLK_in <= '0';
-        wait for 0.5 * k;
-        CLK_in<= '1';
-        wait for 0.5 * k;
+        clk_in <= '0';
+		wait for k/2;
+		clk_in <= '1';
+		wait for k/2;
     end process;
+    
+    stim_proc: process
+    begin    
 
-    p1: process
-    begin
-        wait;
+        reset <= '0';
+        wait for 50 ns;
+        reset <= '1';
+        wait for 50 ns;
+        reset <= '1'; 
+        wait for 10 ns;
+        wait for 2020 ms; -- tiempo simulacion 1 Hz
+        --wait for 5200 us; -- tiempo simulacion 200 Hz
+        
+        assert false
+        report "[SUCCESS: simulation finished]."
+        severity failure;
     end process;
 
 end Behavioral;
