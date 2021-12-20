@@ -47,6 +47,8 @@ BEGIN
         );
     tb: PROCESS
     BEGIN
+        seleccion<= "000";
+        wait for 2*reloj_periodo;
         seleccion<= "001";
         wait for 2*reloj_periodo;
         seleccion<="010";
@@ -58,6 +60,8 @@ BEGIN
         seleccion<="101";
         wait for 2*reloj_periodo;
         seleccion<="110";
+        wait for 2*reloj_periodo;
+        seleccion<= "111";
         wait for 2*reloj_periodo;
         ASSERT false
         REPORT "Simulacin finalizada. Test superado."

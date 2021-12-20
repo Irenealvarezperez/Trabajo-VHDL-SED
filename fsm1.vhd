@@ -21,6 +21,7 @@
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.numeric_std.all;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
@@ -32,40 +33,49 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 entity fsm1 is
+ generic (
+        long_opcion:positive:=3
+    );
     port (
         RESET : in std_logic;
         CLK : in std_logic;
         EDGE : in std_logic;
+
         --Añadir contadores o temporizadores (?)
-        MODOS : in std_logic_vector(0 TO 1);
+        MODOS : in std_logic_vector(1 downto 0);
         SEL_LECHE: in std_logic;
         SEL_AZUCAR: in std_logic;
-        MODO_DISPLAY: out std_logic_vector(2 downto 0); --salida para indicarle al display el modo
-        TIEMPO_DISPLAY: out string(1 downto 0);
+        MODO_DISPLAY: out std_logic_vector(long_opcion -1 downto 0); --salida para indicarle al display el modo
+       -- TIEMPO_DISPLAY: out string(1 downto 0);
         LED_ENCENDIDA: out std_logic;
         LED_BOMBA: out std_logic;
         LED_LECHE: out std_logic;
         LED_AZUCAR: out std_logic;
         --Salidas para la esclava
-        PARAM: out std_logic;
+        --PARAM: out std_logic;
         START: out std_logic;
-        DONE: out std_logic
+        DONE: in std_logic;
+        DELAY : out unsigned (7 downto 0)
     );
 end fsm1;
 
 architecture Behavioral of fsm1 is
-    type STATES is (S0, S1, S2, S3, S4, S5);
-    -- estado 0 :reposo  estado 1 :encendida/indicar nivel de azucar
-    -- estado 2: seleccion tipo cafe  estado 3: echar cafe  estado 4: seleccionar leche 
-    -- estado 5: echar leche
+    --¿¿Estado de preparación (calentamiento/molido cafe)??
+    type STATES is (S0, S1, S2_1, S2_2, S3, S4, S5, S6); --creo que hace falta un estado mas
+    -- estado 0 :reposo  estado 1: encendida/preparación estado 2 :indicar nivel de azucar
+    -- estado 3: seleccion tipo cafe  estado 4: echar cafe  estado 5: seleccionar leche 
+    -- estado 6: echar leche
     signal current_state: STATES := S0;
     signal next_state: STATES;
 
+    constant tiempo_preparacion :positive := 30; --tiempo de calentamiento/molido cafe
+    constant tiempo_azucar : positive := 30;
+    constant tiempo_corto : positive := 40;  --tiempo de echar el cafe
+    constant tiempo_largo : positive := 40;
+    constant tiempo_leche : positive := 40; --tiempo de echar la leche
 begin
     state_register: process (RESET, CLK)
-
     begin
-
         if RESET = '0' then
             current_state <= S0;
 
@@ -74,48 +84,81 @@ begin
         end if;
     end process;
 
-    nextstate: process (RESET,MODOS,EDGE, current_state)
+    nextstate: process (RESET,MODOS,EDGE, current_state, DONE)
     begin
         next_state <= current_state;
+        START <= '0';
+        DELAY <= (others => '0');
 
         case current_state is
 
             when S0 =>
+                START <= '0';
+                DELAY <= (others => '0');
                 if EDGE = '1' then
                     next_state <= S1;
+                    START <= '1';
+                    DELAY <= to_unsigned(tiempo_preparacion -2, DELAY'length);
                 end if;
             when S1 =>
+                START<='0';
+                DELAY <= (others => '0');
 
-                -- if temporizador_azucar <= 30 segundos then (la esclava le dice que ha acabado)
-                next_state <= S2;
-            --end if
+                if DONE = '1' then
+                    next_state <= S2_1;
+                end if;
 
-            when S2 =>
-                if MODOS = "01"  then
+            --Hay que hacer un estado para la carga y otro para la espera a que cuente 
+            --como en los de la leche y el cafe
+            when S2_1=>
+                START<='1';
+                DELAY <= to_unsigned(tiempo_azucar -2, DELAY'length);
+                next_state <= S2_2;
+            when s2_2=>
+                START<='0';
+                DELAY <= (others => '0');
+                if DONE = '1' then
                     next_state <= S3;
+                end if;
+            when S3 =>
+                START <= '1';
+                if MODOS = "01"  then --???????????
+                    DELAY <= to_unsigned(tiempo_corto -2, DELAY'length);
+                    next_state <= S4;
                 end if;
                 if MODOS = "10"  then
-                    next_state <= S3;
+                    DELAY <= to_unsigned(tiempo_largo -2, DELAY'length);
+                    next_state <= S4;
                 end if;
 
-            when S3 =>
+            when S4 =>
+                START <= '0';
+                DELAY <= (others => '0');
                 -- if temporizador_corto <= 10 segundos then (la esclava le dice que ha acabado)
-                next_state <= S4;
-                -- end if; 
-                -- if temporizador_largo <= 20 segundos then (la esclava le dice que ha acabado)
-                next_state <= S4;
+                if DONE = '1' then
+                    next_state <= S5;
+                end if;
+            -- end if; 
+            -- if temporizador_largo <= 20 segundos then (la esclava le dice que ha acabado)
+
+            -- next_state <= S4;
             -- end if; 
 
-            when S4 =>
+            when S5 =>
+
                 if SEL_LECHE = '1' then
-                    next_state <= S5;
+                    START <= '1';
+                    DELAY <= to_unsigned(tiempo_leche -2, DELAY'length);
+                    next_state <= S6;
                 else
                     next_state <= S0;
                 end if;
 
-            when S5 =>
+            when S6 =>
                 -- if temporizador_leche <= 15 segundos then (la esclava le dice que ha acabado)
-                next_state <= S0;
+                if DONE = '1' then
+                    next_state <= S0;
+                end if;
                 --end if;
 
 
@@ -137,62 +180,63 @@ begin
                 --temporizador_leche <= '0'
                 --temporizador_azcuar <= '0'
                 LED_ENCENDIDA <= '0';
-                MODO_DISPLAY <= "---";
+                MODO_DISPLAY <= "000";
 
-
-            when S1 =>
-
+            when s1=>
                 LED_ENCENDIDA <= '1';
-                TIEMPO_DISPLAY <= "30"; --le dice al display que enseñe la cuenta atras
+            when S2_1 =>
+               -- TIEMPO_DISPLAY <= "30"; --le dice al display que enseñe la cuenta atras
                 -- le dice a la esclava que  active el temporizador de azucar   
-                     MODO_DISPLAY <= "001"; 
+                MODO_DISPLAY <= "001";
+
+            when S2_2 =>
                 if SEL_AZUCAR = '1' then
-                LED_AZUCAR <= '1';
-                end if;  
-
-
-            when S2 =>
+                    LED_AZUCAR <= '1';
+                end if;
+            when S3 =>
                 if MODOS = "01" then
-
                     MODO_DISPLAY <= "010"; --le dice al display el modo
                 end if;
                 if MODOS = "10" then
-                    MODO_DISPLAY <= "011"; --le dice al display el modo
-                end if;
-
-            when S3 =>
-
-                if MODOS = "01" then
-                    LED_BOMBA <= '1';
-                    --le dice a la esclava que  active el temporizador de corto 
-                    TIEMPO_DISPLAY <= "10";
-                end if;
-                if MODOS = "10" then
-                    LED_BOMBA <= '1';
-                    --le dice a la esclava que  active el temporizador de largo
-                    TIEMPO_DISPLAY <= "20";
+                    MODO_DISPLAY <= "100"; --le dice al display el modo
                 end if;
 
             when S4 =>
-                if SEL_LECHE = '1' then
-                    LED_LECHE <= '1';
-                     MODO_DISPLAY <= "100"; 
-                 else if SEL_LECHE = '0' then
-                 MODO_DISPLAY <= "101";
-                 end if;
+
+                if MODOS = "01" then
+                    LED_BOMBA <= '1';
+                    MODO_DISPLAY <= "011";
+                    --le dice a la esclava que  active el temporizador de corto 
+                    --TIEMPO_DISPLAY <= "10";
+                end if;
+                if MODOS = "10" then
+                    LED_BOMBA <= '1';
+                    MODO_DISPLAY <= "101";
+                    --le dice a la esclava que  active el temporizador de largo
+                    --TIEMPO_DISPLAY <= "20";
                 end if;
 
             when S5 =>
+            LED_BOMBA<='0';
+                if SEL_LECHE = '1' then
+                    LED_LECHE <= '1';
+                    MODO_DISPLAY <= "110";
+                else if SEL_LECHE = '0' then
+                        MODO_DISPLAY <= "111";
+                    end if;
+                end if;
+
+            when S6 =>
                 if SEL_LECHE = '1' then
                     LED_LECHE <= '1';
                     --le dice a la esclava que  active el temporizador de leche
-                    TIEMPO_DISPLAY <= "15";
+                    --TIEMPO_DISPLAY <= "15";
                 end if;
 
             when others =>
 
                 MODO_DISPLAY<= "000";
-                TIEMPO_DISPLAY <="00";
+               -- TIEMPO_DISPLAY <="00";
         end case;
     end process;
 end Behavioral;

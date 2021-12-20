@@ -23,7 +23,15 @@ BEGin
     process(seleccion)
     begin
         case seleccion is
-
+            when "000"=>
+                salida_disp7<="1111110";---
+                salida_disp6<="1111110";---
+                salida_disp5<="1111110";---
+                salida_disp4<="1111110";---
+                salida_disp3<="1111110";---
+                salida_disp2<="1111110";---
+                salida_disp1<="1111110";---
+                salida_disp0<="1111110";---
             when "001"=> --Nivel azúcar> AZUCAR
                 salida_disp7<="0001000";--A
                 salida_disp6<="0010010";--Z
@@ -34,6 +42,15 @@ BEGin
                 salida_disp1<="1111111";--vacio
                 salida_disp0<="1111111";--vacio
             when "010"=> --corto
+                salida_disp7<="0110001";--C
+                salida_disp6<="0000001";--o
+                salida_disp5<="0001000";--R
+                salida_disp4<="1110000";--t
+                salida_disp3<="0000001";--o
+                salida_disp2<="1111111";--vacio
+                salida_disp1<="1111111";--vacio
+                salida_disp0<="1111111";--vacio 
+            when "011"=> --corto-10seg
                 salida_disp7<="1001111";--1
                 salida_disp6<="0000001";--0
                 salida_disp5<="0100100";--S
@@ -42,7 +59,16 @@ BEGin
                 salida_disp2<="1111111";--vacio
                 salida_disp1<="1111111";--vacio
                 salida_disp0<="1111111";--vacio 
-            when "011"=> --largo
+            when "100"=> --largo
+                salida_disp7<="1110001";--L
+                salida_disp6<="0001000";--A
+                salida_disp5<="0001000";--R
+                salida_disp4<="0100000";--G
+                salida_disp3<="0000001";--0
+                salida_disp2<="1111111";--vacio
+                salida_disp1<="1111111";--vacio
+                salida_disp0<="1111111";--vacio 
+            when "101"=> --largo-20seg
                 salida_disp7<="0010010";--2
                 salida_disp6<="0000001";--0
                 salida_disp5<="0100100";--S
@@ -51,7 +77,7 @@ BEGin
                 salida_disp2<="1111111";--vacio
                 salida_disp1<="1111111";--vacio
                 salida_disp0<="1111111";--vacio 
-            when "100"=> -- con leche
+            when "110"=> -- con leche
                 salida_disp7<="0001110";--L
                 salida_disp6<="0110000";--E
                 salida_disp5<="0110001";--C
@@ -60,7 +86,7 @@ BEGin
                 salida_disp2<="1111111";--vacio
                 salida_disp1<="1111111";--vacio
                 salida_disp0<="1111111";--vacio   
-            when "101"=> -- sin leche
+            when "111"=> -- sin leche
                 salida_disp7<="0001001";--N
                 salida_disp6<="0000001";--O
                 salida_disp5<="1111111";--vacio 
