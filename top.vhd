@@ -12,11 +12,16 @@ use IEEE.NUMERIC_STD.ALL;
 --use UNISIM.VComponents.all;
 
 entity top is
-    generic (num_entradas:positive:=2);
+    generic (
+    num_entradas:positive:=2;
+    frecuencia:integer:=5000000
+    
+    );
     port(
         entradas: in std_logic_vector (num_entradas -1 downto 0);
         sel_leche: in std_logic;
         sel_azucar: in std_logic;
+        sel_okey: in std_logic;
         boton_inicio: in std_logic;--botón inicio
         clk_entrada: in std_logic;
         reset_global: in std_logic; --asíncrono
@@ -35,8 +40,10 @@ architecture Behavioral of top is
 
     --Generales
     constant long_opcion: positive:=3;
-    constant frecuencia: positive:=10000000;
-    signal clk_salida: std_logic;
+    constant frecuencia1: integer:=50000;--esclava
+     constant frecuencia2: integer:=125000;--display
+    signal clk_salida: std_logic;--esclava
+    signal clk_salida2: std_logic;--display
     --signal clk_entrada: std_logic;
     --signal boton_inicio: std_logic;
     signal sinc_detector: std_logic;
@@ -61,6 +68,9 @@ architecture Behavioral of top is
     signal salida_disp7: std_logic_vector (6 downto 0);
 
     component divisor_frec
+    generic(
+    freq : integer
+    );
         port (
             clk_in : in  std_logic; -- 100 MHz
             reset : in  std_logic;
@@ -91,6 +101,7 @@ architecture Behavioral of top is
             MODOS : in std_logic_vector(0 TO 1);
             SEL_LECHE: in std_logic;
             SEL_AZUCAR: in std_logic;
+            SEL_OKEY: in std_logic;
             MODO_DISPLAY: out std_logic_vector(long_opcion -1 downto 0); --salida para indicarle al display que enseñe el modo
             -- TIEMPO_DISPLAY: out string(1 downto 0);
             LED_ENCENDIDA: out std_logic;
@@ -149,16 +160,22 @@ begin
             SYNC_IN => boton_inicio,
             SYNC_OUT => sinc_detector
         );
-    Inst_divisor_frec: divisor_frec port map (
+    Inst_divisor_frec: divisor_frec 
+    generic map(
+    freq => frecuencia
+    )
+    port map (
             clk_in => clk_entrada,
             reset => reset_global,
             clk_out => clk_salida
         );
+  
     Inst_detector_flanco: detector_flanco port map(
             CLK =>clk_salida,
             EDGE_IN =>sinc_detector,
             EDGE_OUT =>detector_fsm1
         );
+        
     Inst_fsm1: fsm1 port map(
             RESET => reset_global,
             CLK => clk_salida,
@@ -167,6 +184,7 @@ begin
             SEL_LECHE => sel_leche,
             LED_AZUCAR => led_azucar,
             SEL_AZUCAR => sel_azucar,
+            SEL_OKEY => sel_okey,
             MODO_DISPLAY => modo_display,
             -- TIEMPO_DISPLAY => tiempo_display,
             LED_ENCENDIDA =>led_encendida,

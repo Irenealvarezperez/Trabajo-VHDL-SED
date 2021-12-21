@@ -31,24 +31,28 @@ port(
     START   : in std_logic; -- señal de inicio
     DELAY   : in unsigned (7 downto 0); -- tiempo de espera
     DONE    : out std_logic --señal de fin
+    --SEGUNDOS : out std_logic (7 downto 0) Posible señal para sacar 
 );
 end fsm_esclava;
 
 architecture Behavioral of fsm_esclava is
   signal cuenta : unsigned (DELAY'range);
+  -- signal tiempo_actual : unsigned (segundos'range);
 begin
-  DONE <= '1' when cuenta = 0 else '0';
-  
-  process(CLK, RESET)
-  begin
+    process(RESET, CLK)
+    begin
     if RESET = '0' then --si pulsamos el reset ponemos todo a 0
       cuenta <=(others => '0');
+      --tiempo_actual <=(others => '0');
     elsif rising_edge(CLK) then
       if START ='1' then
         cuenta <= DELAY;
       elsif cuenta /= 0 then
         cuenta <= cuenta -1;
+        --tiempo_actual<= tiempo_actual+1;
       end if;
     end if;
-  end process;     
+  end process; 
+    DONE <= '1' when cuenta = 1 else '0';
+    --Segundos <= std_logic_vector(tiempo_actual);    
 end Behavioral;
