@@ -138,19 +138,20 @@ begin
                     next_state <= S5;
                 end if;
             when S5 =>
-                if SEL_LECHE = '1' then
-                    START <= '1';
-                    DELAY <= to_unsigned(tiempo_leche -2, DELAY'length);
-                    next_state <= S6;
-                else
-                    next_state <= S0;
+                if SEL_OKEY='1' then
+
+                    if SEL_LECHE = '1' then
+                        START <= '1';
+                        DELAY <= to_unsigned(tiempo_leche -2, DELAY'length);
+
+                        next_state <= S6;
+                    else
+                        next_state <= S0;
+                    end if;
                 end if;
             when S6 =>
                 -- if temporizador_leche <= 15 segundos then (la esclava le dice que ha acabado)
                 START<='0';
-                if SEL_LECHE = '1' then
-                    LED_LECHE <= '1';
-                end if;
                 if DONE = '1' then
                     next_state <= S0;
                 end if;
@@ -175,6 +176,7 @@ begin
             when S2_1 =>
                 MODO_DISPLAY <= "001";
             when S2_2 =>
+                MODO_DISPLAY <= "001";
                 if SEL_AZUCAR = '1' then
                     LED_AZUCAR <= '1';
                 end if;
