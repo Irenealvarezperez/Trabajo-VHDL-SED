@@ -138,6 +138,7 @@ begin
                     next_state <= S5;
                 end if;
             when S5 =>
+            
                 if SEL_OKEY='1' then
 
                     if SEL_LECHE = '1' then
