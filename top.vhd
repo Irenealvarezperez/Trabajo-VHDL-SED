@@ -20,13 +20,14 @@ entity top is
         boton_inicio: in std_logic;--botón inicio
         clk_entrada: in std_logic;
         reset_global: in std_logic; --asíncrono
-         segment: out std_logic_vector (7 downto 0);
-         led_leche: out std_logic;
-         led_azucar: out std_logic;
-         led_bomba: out std_logic;
-         led_encendida: out std_logic;
-        digctrl : out std_logic_vector(7 downto 0)
-        
+        --segment: out std_logic_vector (7 downto 0);
+        led_leche: out std_logic;
+        led_azucar: out std_logic;
+        led_bomba: out std_logic;
+        led_encendida: out std_logic;
+       -- digctrl : out std_logic_vector(7 downto 0);
+        numero_display: out std_logic_vector(6 downto 0);
+        seleccion_display : out std_logic_vector(7 downto 0)
     );
 end top;
 
@@ -40,7 +41,7 @@ architecture Behavioral of top is
     --signal boton_inicio: std_logic;
     signal sinc_detector: std_logic;
     signal detector_fsm1: std_logic;
-   -- signal reset_global: std_logic;
+    -- signal reset_global: std_logic;
     --fsm1
     --signal modos: std_logic_vector (0 to 1);
     signal modo_display: std_logic_vector (long_opcion -1 downto 0);----deberian ser 3
@@ -58,13 +59,13 @@ architecture Behavioral of top is
     signal salida_disp5: std_logic_vector (6 downto 0);
     signal salida_disp6: std_logic_vector (6 downto 0);
     signal salida_disp7: std_logic_vector (6 downto 0);
-    
-    component divisor_frec 
-    port ( 
-        clk_in : in  std_logic; -- 100 MHz
-        reset : in  std_logic;
-        clk_out : out  std_logic
-    );
+
+    component divisor_frec
+        port (
+            clk_in : in  std_logic; -- 100 MHz
+            reset : in  std_logic;
+            clk_out : out  std_logic
+        );
     end component;
     component detector_flanco
         port (
@@ -95,7 +96,7 @@ architecture Behavioral of top is
             LED_ENCENDIDA: out std_logic;
             LED_BOMBA: out std_logic;
             LED_LECHE: out std_logic;
-         LED_AZUCAR: out std_logic;
+            LED_AZUCAR: out std_logic;
             --Salidas para la esclava
             -- PARAM: out std_logic;
             START: out std_logic;
@@ -125,19 +126,34 @@ architecture Behavioral of top is
             salida_disp7 : OUT std_logic_vector(6 DOWNTO 0)
         );
     end component;
+    component visualizar_display is
+        Port (
+            clk : in  STD_LOGIC;
+            salida_disp0 : IN std_logic_vector(6 downto 0);
+            salida_disp1 : in std_logic_vector(6 downto 0);
+            salida_disp2: IN std_logic_vector(6 downto 0);
+            salida_disp3 : IN std_logic_vector(6 downto 0);
+            salida_disp4 : IN std_logic_vector(6 downto 0);
+            salida_disp5 : IN std_logic_vector(6 downto 0);
+            salida_disp6 : IN std_logic_vector(6 downto 0);
+            salida_disp7 : IN std_logic_vector(6 downto 0);
+            numero_display: out  STD_LOGIC_VECTOR (6 downto 0);
+            seleccion_display : out  STD_LOGIC_VECTOR (7 downto 0)
 
+        );
+    end component;
 begin
-        digctrl<=(others=>'0');
+    --digctrl<=(others=>'0');
     Inst_sincronizador: sincronizador port map(
             CLK => clk_salida,
             SYNC_IN => boton_inicio,
             SYNC_OUT => sinc_detector
         );
-        Inst_divisor_frec: divisor_frec port map ( 
-         clk_in => clk_entrada,
-        reset => reset_global,
-       clk_out => clk_salida
-       );
+    Inst_divisor_frec: divisor_frec port map (
+            clk_in => clk_entrada,
+            reset => reset_global,
+            clk_out => clk_salida
+        );
     Inst_detector_flanco: detector_flanco port map(
             CLK =>clk_salida,
             EDGE_IN =>sinc_detector,
@@ -178,5 +194,18 @@ begin
             salida_disp5 => salida_disp5,
             salida_disp6 => salida_disp6,
             salida_disp7 => salida_disp7
+        );
+    Inst_visualizar_display:visualizar_display port map(
+            clk => clk_salida,
+            salida_disp0 => salida_disp0,
+            salida_disp1 => salida_disp1,
+            salida_disp2 => salida_disp2,
+            salida_disp3 => salida_disp3,
+            salida_disp4 => salida_disp4,
+            salida_disp5 => salida_disp5,
+            salida_disp6 => salida_disp6,
+            salida_disp7 => salida_disp7,
+            numero_display => numero_display,
+            seleccion_display=> seleccion_display
         );
 end Behavioral;
