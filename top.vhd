@@ -20,12 +20,12 @@ entity top is
         boton_inicio: in std_logic;--botón inicio
         clk_entrada: in std_logic;
         reset_global: in std_logic; --asíncrono
-        segment: out std_logic_vector (7 downto 0);
+        --segment: out std_logic_vector (7 downto 0);
         led_leche: out std_logic;
         led_azucar: out std_logic;
         led_bomba: out std_logic;
         led_encendida: out std_logic;
-        digctrl : out std_logic_vector(7 downto 0);
+       -- digctrl : out std_logic_vector(7 downto 0);
         numero_display: out std_logic_vector(6 downto 0);
         seleccion_display : out std_logic_vector(7 downto 0)
     );
@@ -143,7 +143,7 @@ architecture Behavioral of top is
         );
     end component;
 begin
-    digctrl<=(others=>'0');
+    --digctrl<=(others=>'0');
     Inst_sincronizador: sincronizador port map(
             CLK => clk_salida,
             SYNC_IN => boton_inicio,
