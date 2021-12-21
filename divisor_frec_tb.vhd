@@ -41,7 +41,7 @@ architecture Behavioral of divisor_frec_tb is
     signal CLK_out: std_logic;
     component divisor_frec is
     	generic ( 
-	   freq : integer := 10000000
+	   freq : integer := 50000
 	);
         port (
             clk_in : in  std_logic; -- 100 MHz
@@ -52,10 +52,6 @@ architecture Behavioral of divisor_frec_tb is
     constant k: time := 10 ns;
 begin
    uut_clk_divider: divisor_frec
-    generic map ( freq => 50000000) -- 1 Hz
-	--generic map ( 
-	   --freq => 125000 -- 400 Hz
-	--) 
 	port map (
         clk_in => clk_in, -- 100 MHz
         reset => reset,
