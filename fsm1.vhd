@@ -62,12 +62,12 @@ architecture Behavioral of fsm1 is
     type STATES is (S0, S1, S2_1, S2_2, S3_1, s3_2, S4, S5_1, s5_2, S6);
     signal current_state: STATES := S0;
     signal next_state: STATES;
-    constant tiempo_preparacion :positive := 1000; --tiempo de calentamiento/molido cafe
-    constant tiempo_azucar : positive := 1000;
-    constant tiempo_corto : positive := 2200;  --tiempo de echar el cafe
-    constant tiempo_largo : positive:= 4200;
-    constant tiempo_espera_leche: positive := 1000;
-    constant tiempo_leche : positive := 2000; --tiempo de echar la leche
+    constant tiempo_preparacion :positive := 5000; --tiempo de calentamiento/molido cafe
+    constant tiempo_azucar : positive := 5000;
+    constant tiempo_corto : positive := 12000;  --tiempo de echar el cafe
+    constant tiempo_largo : positive:= 21000;
+    constant tiempo_espera_leche: positive := 5000;
+    constant tiempo_leche : positive := 11000; --tiempo de echar la leche
 begin
 
     state_register: process (RESET, CLK)

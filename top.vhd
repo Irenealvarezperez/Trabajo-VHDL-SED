@@ -69,7 +69,7 @@ architecture Behavioral of top is
 
     component divisor_frec
     generic(
-    freq : integer:=250000
+    freq : integer:=50000
     );
         port (
             clk_in : in  std_logic; -- 100 MHz
