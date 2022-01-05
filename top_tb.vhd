@@ -108,6 +108,8 @@ begin
         boton_inicio<='1';
         wait for 2*periodo_reloj;
         boton_inicio<='0';
+               wait for 2*periodo_reloj;
+        done<='0';
         wait for 25*periodo_reloj;
         sel_azucar<='1';
         wait for 25*periodo_reloj;

@@ -66,7 +66,7 @@ BEGIN
         seleccion<= "0111";
         wait for 2*reloj_periodo;
         ASSERT false
-        REPORT "Simulacin finalizada. Test superado."
+        REPORT "Simulacion finalizada. Test superado."
         SEVERITY FAILURE;
     END PROCESS;
 END BEHAVIORAL;
