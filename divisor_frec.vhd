@@ -24,7 +24,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity divisor_frec is
     generic ( 
-       freq: integer :=50000
+       freq: integer
     );
     port (
         clk_in : in  std_logic; -- 100 MHz

@@ -45,12 +45,12 @@ architecture Behavioral of top_tb is
     signal boton_inicio: std_logic;
     signal clk_entrada: std_logic;
     signal reset_global: std_logic;
-    signal segment: std_logic_vector(7 downto 0);
+    --signal segment: std_logic_vector(7 downto 0);
     signal led_leche: std_logic;
     signal led_azucar: std_logic;
     signal led_bomba: std_logic;
     signal led_encendida: std_logic;
-    signal digctrl: std_logic_vector(7 downto 0);
+    --signal digctrl: std_logic_vector(7 downto 0);
     signal numero_display: std_logic_vector(6 downto 0);
     signal seleccion_display: std_logic_vector(7 downto 0);
 
@@ -62,12 +62,12 @@ architecture Behavioral of top_tb is
             boton_inicio: in std_logic;--botón inicio
             clk_entrada: in std_logic;
             reset_global: in std_logic; --asíncrono
-            segment: out std_logic_vector (7 downto 0);
+           -- segment: out std_logic_vector (7 downto 0);
             led_leche: out std_logic;
             led_azucar: out std_logic;
             led_bomba: out std_logic;
             led_encendida: out std_logic;
-            digctrl : out std_logic_vector(7 downto 0);
+           -- digctrl : out std_logic_vector(7 downto 0);
             numero_display: out std_logic_vector(6 downto 0);
             seleccion_display : out std_logic_vector(7 downto 0)
         );
@@ -81,12 +81,12 @@ begin
             boton_inicio=>boton_inicio,
             clk_entrada => clk_entrada,
             reset_global => reset_global,
-            segment=> segment,
+            --segment=> segment,
             led_leche => led_leche,
             led_azucar=> led_azucar,
             led_bomba => led_bomba,
             led_encendida => led_encendida,
-            digctrl=> digctrl,
+           -- digctrl=> digctrl,
             numero_display=> numero_display,
             seleccion_display => seleccion_display
         );
@@ -101,7 +101,6 @@ begin
     reset_global<='1','0' after periodo_reloj;
     funcionamiento:process
     begin
-
         wait for 2*periodo_reloj;
         boton_inicio<='1';
         wait for 2*periodo_reloj;
