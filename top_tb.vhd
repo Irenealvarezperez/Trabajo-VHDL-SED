@@ -42,7 +42,7 @@ architecture Behavioral of top_tb is
     signal entradas: std_logic_vector (num_entradas -1 downto 0);
     signal sel_leche: std_logic;
     signal sel_azucar: std_logic;
-    signal sel_okey: std_logic;
+    signal sensor: std_logic;
     signal boton_inicio: std_logic;
     signal clk_entrada: std_logic;
     signal reset_global: std_logic;
@@ -60,7 +60,7 @@ architecture Behavioral of top_tb is
             entradas: in std_logic_vector (num_entradas -1 downto 0);
             sel_leche: in std_logic;
             sel_azucar: in std_logic;
-            sel_okey: in std_logic;
+            sensor: in std_logic;
             boton_inicio: in std_logic;--botón inicio
             clk_entrada: in std_logic;
             reset_global: in std_logic; --asíncrono
@@ -80,7 +80,7 @@ begin
             entradas=>entradas,
             sel_leche=> sel_leche,
             sel_azucar=>sel_azucar,
-            sel_okey=>sel_okey,
+            sensor=>sensor,
             boton_inicio=>boton_inicio,
             clk_entrada => clk_entrada,
             reset_global => reset_global,
@@ -108,12 +108,10 @@ begin
         boton_inicio<='1';
         wait for 2*periodo_reloj;
         boton_inicio<='0';
-               wait for 2*periodo_reloj;
-        done<='0';
         wait for 25*periodo_reloj;
         sel_azucar<='1';
         wait for 25*periodo_reloj;
-        sel_okey<='1';
+        sensor<='1';
         wait for periodo_reloj;
         entradas<="10";
         wait for periodo_reloj;

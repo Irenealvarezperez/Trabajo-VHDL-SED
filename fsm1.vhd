@@ -154,7 +154,7 @@ begin
                 DELAY<=(others=>'0');
                 if MODOS = "01" then
                     LED_BOMBA <= '1';
-                    MODO_DISPLAY <= "011";
+                    MODO_DISPLAY <= "0011";
                 end if;
                 if MODOS = "10" then
                     LED_BOMBA <= '1';
