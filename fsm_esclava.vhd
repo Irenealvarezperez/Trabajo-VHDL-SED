@@ -29,7 +29,7 @@ port(
     CLK     : in std_logic; --señal de reloj
     RESET   : in std_logic; --reset activo a nivel alto
     START   : in std_logic; -- señal de inicio
-    DELAY   : in unsigned (7 downto 0); -- tiempo de espera
+    DELAY   : in unsigned (14 downto 0); -- tiempo de espera
     DONE    : out std_logic --señal de fin
     --SEGUNDOS : out std_logic (7 downto 0) Posible señal para sacar 
 );

@@ -78,7 +78,7 @@ BEGin
                 salida_disp1<="1111111";--vacio
                 salida_disp0<="1111111";--vacio 
             when "0110"=> -- con leche
-                salida_disp7<="0111000";--L
+                salida_disp7<="1000111";--L
                 salida_disp6<="0000110";--E
                 salida_disp5<="1000110";--C
                 salida_disp4<="0001001";--H
@@ -90,7 +90,7 @@ BEGin
                 salida_disp7<="1001000";--N
                 salida_disp6<="1000000";--O
                 salida_disp5<="1111111";--vacio 
-                salida_disp4<="0111000";--L
+                salida_disp4<="1000111";--L
                 salida_disp3<="0000110";--E
                 salida_disp2<="1000110";--C
                 salida_disp1<="0001001";--H

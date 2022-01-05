@@ -13,15 +13,15 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity top is
     generic (
-    num_entradas:positive:=2;
-    frecuencia:integer:=5000000
+    num_entradas:positive:=2
+    --frecuencia:integer:=5000000
     
     );
     port(
         entradas: in std_logic_vector (num_entradas -1 downto 0);
         sel_leche: in std_logic;
         sel_azucar: in std_logic;
-        sel_okey: in std_logic;
+       sensor: in std_logic;
         boton_inicio: in std_logic;--botón inicio
         clk_entrada: in std_logic;
         reset_global: in std_logic; --asíncrono
@@ -56,7 +56,7 @@ architecture Behavioral of top is
     -- signal param: std_logic;
     signal start: std_logic;
     signal done: std_logic;
-    signal delay : unsigned (7 downto 0);
+    signal delay : unsigned (14 downto 0);
     --Decodificador
     signal salida_disp0: std_logic_vector (6 downto 0);
     signal salida_disp1: std_logic_vector (6 downto 0);
@@ -69,7 +69,7 @@ architecture Behavioral of top is
 
     component divisor_frec
     generic(
-    freq : integer
+    freq : integer:=50000
     );
         port (
             clk_in : in  std_logic; -- 100 MHz
@@ -101,7 +101,7 @@ architecture Behavioral of top is
             MODOS : in std_logic_vector(0 TO 1);
             SEL_LECHE: in std_logic;
             SEL_AZUCAR: in std_logic;
-            SEL_OKEY: in std_logic;
+            SENSOR: in std_logic;
             MODO_DISPLAY: out std_logic_vector(long_opcion -1 downto 0); --salida para indicarle al display que enseñe el modo
             -- TIEMPO_DISPLAY: out string(1 downto 0);
             LED_ENCENDIDA: out std_logic;
@@ -112,7 +112,7 @@ architecture Behavioral of top is
             -- PARAM: out std_logic;
             START: out std_logic;
             DONE: in std_logic;
-            DELAY : out unsigned (7 downto 0)
+            DELAY : out unsigned (14 downto 0)
         );
     end component;
     component fsm_esclava
@@ -120,7 +120,7 @@ architecture Behavioral of top is
             CLK     : in std_logic; --señal de reloj
             RESET   : in std_logic; --reset activo a nivel alto
             START   : in std_logic; -- señal de inicio
-            DELAY   : in unsigned (7 downto 0); -- tiempo de espera
+            DELAY   : in unsigned (14 downto 0); -- tiempo de espera
             DONE    : out std_logic --señal de fin
         );
     end component;
@@ -161,9 +161,6 @@ begin
             SYNC_OUT => sinc_detector
         );
     Inst_divisor_frec: divisor_frec 
-    generic map(
-    freq => frecuencia
-    )
     port map (
             clk_in => clk_entrada,
             reset => reset_global,
@@ -184,7 +181,7 @@ begin
             SEL_LECHE => sel_leche,
             LED_AZUCAR => led_azucar,
             SEL_AZUCAR => sel_azucar,
-            SEL_OKEY => sel_okey,
+            SENSOR =>sensor,
             MODO_DISPLAY => modo_display,
             -- TIEMPO_DISPLAY => tiempo_display,
             LED_ENCENDIDA =>led_encendida,
