@@ -42,6 +42,7 @@ architecture Behavioral of top_tb is
     signal entradas: std_logic_vector (num_entradas -1 downto 0);
     signal sel_leche: std_logic;
     signal sel_azucar: std_logic;
+    signal sel_okey: std_logic;
     signal boton_inicio: std_logic;
     signal clk_entrada: std_logic;
     signal reset_global: std_logic;
@@ -59,15 +60,16 @@ architecture Behavioral of top_tb is
             entradas: in std_logic_vector (num_entradas -1 downto 0);
             sel_leche: in std_logic;
             sel_azucar: in std_logic;
+            sel_okey: in std_logic;
             boton_inicio: in std_logic;--botón inicio
             clk_entrada: in std_logic;
             reset_global: in std_logic; --asíncrono
-           -- segment: out std_logic_vector (7 downto 0);
+            -- segment: out std_logic_vector (7 downto 0);
             led_leche: out std_logic;
             led_azucar: out std_logic;
             led_bomba: out std_logic;
             led_encendida: out std_logic;
-           -- digctrl : out std_logic_vector(7 downto 0);
+            -- digctrl : out std_logic_vector(7 downto 0);
             numero_display: out std_logic_vector(6 downto 0);
             seleccion_display : out std_logic_vector(7 downto 0)
         );
@@ -78,6 +80,7 @@ begin
             entradas=>entradas,
             sel_leche=> sel_leche,
             sel_azucar=>sel_azucar,
+            sel_okey=>sel_okey,
             boton_inicio=>boton_inicio,
             clk_entrada => clk_entrada,
             reset_global => reset_global,
@@ -86,7 +89,7 @@ begin
             led_azucar=> led_azucar,
             led_bomba => led_bomba,
             led_encendida => led_encendida,
-           -- digctrl=> digctrl,
+            -- digctrl=> digctrl,
             numero_display=> numero_display,
             seleccion_display => seleccion_display
         );
@@ -104,9 +107,11 @@ begin
         wait for 2*periodo_reloj;
         boton_inicio<='1';
         wait for 2*periodo_reloj;
-        boton_inicio<='0';       
+        boton_inicio<='0';
         wait for 25*periodo_reloj;
         sel_azucar<='1';
+        wait for 25*periodo_reloj;
+        sel_okey<='1';
         wait for periodo_reloj;
         entradas<="10";
         wait for periodo_reloj;
