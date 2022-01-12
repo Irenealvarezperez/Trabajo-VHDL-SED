@@ -1,4 +1,3 @@
-
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
@@ -19,17 +18,18 @@ entity top is
     );
     port(
         entradas: in std_logic_vector (num_entradas -1 downto 0);
-        sel_leche: in std_logic;
-        sel_azucar: in std_logic;
-       sensor: in std_logic;
+        sel_leche: in std_logic; --switch seleccionar leche
+        sel_azucar: in std_logic; --switch seleccionar azucar
+       sensor: in std_logic; --switch que simula sensor presencia
+       comenzar: in std_logic; --switch para comenzar a preparar cafe
         boton_inicio: in std_logic;--botón inicio
-        clk_entrada: in std_logic;
+        clk_entrada: in std_logic; --clk activo flanco de subida
         reset_global: in std_logic; --asíncrono
         --segment: out std_logic_vector (7 downto 0);
-        led_leche: out std_logic;
-        led_azucar: out std_logic;
-        led_bomba: out std_logic;
-        led_encendida: out std_logic;
+        led_leche: out std_logic; --led indica que quiere leche
+        led_azucar: out std_logic; --led indica que quiere azucar
+        led_bomba: out std_logic; --led activo cuando se echa leche o cafe
+        led_encendida: out std_logic; --led activo si cafetera encendida
        -- digctrl : out std_logic_vector(7 downto 0);
         numero_display: out std_logic_vector(6 downto 0);
         seleccion_display : out std_logic_vector(7 downto 0)
@@ -97,11 +97,12 @@ architecture Behavioral of top is
             RESET : in std_logic;
             CLK : in std_logic;
             EDGE : in std_logic;
-            --Añadir contadores o temporizadores (?)
+         
             MODOS : in std_logic_vector(0 TO 1);
             SEL_LECHE: in std_logic;
             SEL_AZUCAR: in std_logic;
             SENSOR: in std_logic;
+            COMENZAR: in std_logic;
             MODO_DISPLAY: out std_logic_vector(long_opcion -1 downto 0); --salida para indicarle al display que enseñe el modo
             -- TIEMPO_DISPLAY: out string(1 downto 0);
             LED_ENCENDIDA: out std_logic;
@@ -109,7 +110,7 @@ architecture Behavioral of top is
             LED_LECHE: out std_logic;
             LED_AZUCAR: out std_logic;
             --Salidas para la esclava
-            -- PARAM: out std_logic;
+            
             START: out std_logic;
             DONE: in std_logic;
             DELAY : out unsigned (14 downto 0)
@@ -182,6 +183,7 @@ begin
             LED_AZUCAR => led_azucar,
             SEL_AZUCAR => sel_azucar,
             SENSOR =>sensor,
+            COMENZAR =>comenzar,
             MODO_DISPLAY => modo_display,
             -- TIEMPO_DISPLAY => tiempo_display,
             LED_ENCENDIDA =>led_encendida,
