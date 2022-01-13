@@ -126,10 +126,10 @@ begin
         --Estado 0
         wait for 5*CLK_PERIOD;
         EDGE<= '1';
-        wait for 12.5*CLK_PERIOD;
-        edge<='0';
+        wait for 2*CLK_PERIOD;
+        EDGE<='0';
         --Paso a estado 1
-       -- wait for 3*CLK_PERIOD;
+       -- wait for CLK_PERIOD;--
         COMENZAR<='1';
         wait for 3*CLK_PERIOD;
         comenzar<='0';
