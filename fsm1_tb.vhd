@@ -35,6 +35,7 @@ use ieee.numeric_std.all;
 entity fsm1_tb is
 end fsm1_tb;
 
+
 architecture tb of fsm1_tb is
 
     component fsm1
@@ -46,60 +47,61 @@ architecture tb of fsm1_tb is
             MODOS : in std_logic_vector(0 TO 1);
             SEL_LECHE: in std_logic;
             SEL_AZUCAR: in std_logic;
-            SEL_OKEY: in std_logic;
-            MODO_DISPLAY: out std_logic_vector(2 downto 0); --salida para indicarle al display el modo
-            --  TIEMPO_DISPLAY: out string(1 downto 0);
+            sensor: in std_logic;
+            COMENZAR: in std_logic;
+            MODO_DISPLAY: out std_logic_vector(3 downto 0); --salida para indicarle al display el modo
+            --TIEMPO_DISPLAY: out string(1 downto 0);
             LED_ENCENDIDA: out std_logic;
             LED_BOMBA: out std_logic;
             LED_LECHE: out std_logic;
             LED_AZUCAR: out std_logic;
             --Salidas para la esclava
-            --  PARAM: out std_logic;
+            --PARAM: out std_logic;
             START: out std_logic;
-            DONE: in std_logic;
-            DELAY : out unsigned (7 downto 0)
+            DONE: in std_logic
         );
     end component;
 
-    signal SEL_LECHE           : std_logic;
-    signal SEL_AZUCAR       : std_logic;
-    signal SEL_OKEY: std_logic;
-    signal EDGE          : std_logic;
-    signal RESET         : std_logic;
-    signal CLK           : std_logic := '0';
+    signal SEL_LECHE: std_logic;
+    signal SEL_AZUCAR: std_logic;
+    signal COMENZAR: std_logic;
+    signal EDGE: std_logic;
+    signal RESET: std_logic;
+    signal CLK : std_logic := '0';
+    signal done:std_logic;
+    signal start:std_logic;
+    signal sensor:std_logic;
+    signal led_azucar:std_logic;
+    signal led_leche:std_logic;
+    signal led_bomba:std_logic;
+    signal led_encendida:std_logic;
     signal MODOS    :  std_logic_vector(0 TO 1);
-    -- signal TIEMPO_DISPLAY : string( 1 downto 0);
-    signal  MODO_DISPLAY : std_logic_vector(2 downto 0);
-    signal  DONE:  std_logic;
-    signal LED_LECHE           : std_logic;
-    signal LED_BOMBA          : std_logic;
-    signal LED_ENCENDIDA          : std_logic;
-    signal LED_AZUCAR        : std_logic;
-    signal START       : std_logic;
-    signal delay :  unsigned (7 downto 0);
-    constant CLK_PERIOD : time := 10 ns;
+    --signal TIEMPO_DISPLAY : string( 1 downto 0);
+    signal  MODO_DISPLAY : std_logic_vector(3 downto 0);
+
+    constant CLK_PERIOD : time := 20 ns;
 
 begin
 
     uut: fsm1
         port map (
             SEL_LECHE => SEL_LECHE,
+            COMENZAR => COMENZAR,
             EDGE => EDGE,
             SEL_AZUCAR => SEL_AZUCAR,
-            SEL_OKEY => SEL_OKEY,
             RESET => RESET,
             CLK => CLK,
             MODOS => MODOS,
-            LED_LECHE => LED_LECHE,
-            LED_AZUCAR => LED_AZUCAR,
-            LED_BOMBA => LED_BOMBA,
-            LED_ENCENDIDA => LED_ENCENDIDA,
-            START=>START,
-            --    TIEMPO_DISPLAY => TIEMPO_DISPLAY,
+            --TIEMPO_DISPLAY => TIEMPO_DISPLAY,
             MODO_DISPLAY => MODO_DISPLAY,
-            DELAY=>DELAY,
-            DONE => done
-            
+            done=>done,
+            led_azucar=>led_azucar,
+            led_leche=> led_leche,
+            led_bomba=> led_bomba,
+            led_encendida=> led_encendida,
+            start=> start,
+            sensor=> sensor
+
         );
 
     -- Clock generation
@@ -114,42 +116,64 @@ begin
         -- Inputs initialization
         SEL_LECHE <= '0';
         SEL_AZUCAR <= '0';
+        comenzar<='0';
         EDGE <= '0';
-        RESET <= '1';
         MODOS <= "00";
+        --start<='0';
+        done<='0';
+        sensor<='0';
 
-        -- ???
-        wait for 5 * CLK_PERIOD;
-        EDGE <= '1';
-        wait for 12.5 * CLK_PERIOD;
-        DONE<='1';
-        wait for CLK_PERIOD;
-        DONE<='0';
-        wait for 5 * CLK_PERIOD;
-        SEL_AZUCAR <= '1';
-        wait for 5 * CLK_PERIOD;
-        DONE<= '1';
-        wait for CLK_PERIOD;
-        DONE<='0';
-        wait for 5 * CLK_PERIOD;
-        MODOS <= "01";
+        --Estado 0
+        wait for 5*CLK_PERIOD;
+        EDGE<= '1';
+        wait for 12.5*CLK_PERIOD;
+        edge<='0';
+        --Paso a estado 1
+       -- wait for 3*CLK_PERIOD;
+        COMENZAR<='1';
         wait for 3*CLK_PERIOD;
-        SEL_OKEY<='1';
- 
-        wait for 5 * CLK_PERIOD;
-        DONE <= '1';
+        comenzar<='0';
+        wait for 3*CLK_PERIOD;
+        --Paso a estado 2
+        done<= '1';
         wait for CLK_PERIOD;
-        DONE<='0';
-        wait for 5 * CLK_PERIOD;
-        SEL_LECHE <= '1';
-        wait for 5 * CLK_PERIOD;
-        DONE<= '1';
+        done<= '0';
+        --Paso a estado 3
+        wait for 2*CLK_PERIOD;
+        SEL_AZUCAR <= '1';
+        wait for 5*CLK_PERIOD;
+        done<= '1';
         wait for CLK_PERIOD;
-        DONE<='0';
+        done<= '0';
+        --Paso a estado 4  
+        wait for 5*CLK_PERIOD;
+        MODOS <= "01";
+        wait for 5*CLK_PERIOD;
+        --done<='1';
+        --wait for CLK_PERIOD;
+        --done<='0';
+        sensor<='1';
+        --Paso a estado 5
+        wait for CLK_PERIOD;
+        sensor<='0';
+        wait for 2*CLK_PERIOD;
+        done<='1';
+        wait for CLK_PERIOD;
+        done<= '0';
+        --Paso a estado 6
+        sel_leche<='1';
+        wait for 5*CLK_PERIOD;
+        --sensor<='1';
+        done<='1';
+        wait for CLK_PERIOD;
+        done<='0';
+        --Paso a estado 7
+        wait for 2*CLK_PERIOD;
+        done<='1';
+        wait for 2*CLK_PERIOD;
+        done<= '0';
+        wait for 100*CLK_PERIOD;
 
-
-        -- EDIT Add stimuli here
-        wait for 100 * CLK_PERIOD;
 
         -- Stop the clock and hence terminate the simulation
         assert false

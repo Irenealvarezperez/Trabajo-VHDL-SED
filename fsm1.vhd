@@ -1,4 +1,4 @@
-----------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
 -- Company: 
 -- Engineer: 
 -- 
@@ -105,21 +105,21 @@ begin
                     next_state <= S2;
                 end if;
                 
-                if EDGE='1' then --se vuelve a pulsar on/off y se apaga yendo a reposo
-                next_state<= S0;
-                end if;
+ --              if EDGE='1' then --se vuelve a pulsar on/off y se apaga yendo a reposo
+ --              next_state<= S0;
+ --                end if;
                 
                 
            when S2 => --estado preparacion
                 START<='0';
                 DELAY<=(others=>'0');
-                LED_ENCENDIDA <= '1';
+                LED_ENCENDIDA <= '0';---
                 MODO_DISPLAY<="1000";
                 if DONE = '1' then
                     next_state <= S3_1;
                 end if;
             when S3_1=> --estado cargar tiempo de azucar
-                LED_ENCENDIDA <= '1';
+                LED_ENCENDIDA <= '0';
                 START<='1';
                 DELAY <= to_unsigned(tiempo_azucar -2, DELAY'length);
                 MODO_DISPLAY <= "0001";
