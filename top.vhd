@@ -39,7 +39,7 @@ end top;
 architecture Behavioral of top is
 
     --Generales
-    constant long_opcion: positive:=3;
+    constant long_opcion: positive:=4;
     constant frecuencia1: integer:=50000;--esclava
      constant frecuencia2: integer:=125000;--display
     signal clk_salida: std_logic;--esclava

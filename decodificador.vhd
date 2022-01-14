@@ -4,7 +4,7 @@ USE ieee.std_logic_arith.ALL;
 USE ieee.std_logic_unsigned.ALL;
 ENTITY decodificador IS
     generic (
-        long_opcion:positive:=3
+        long_opcion:positive:=4
     );
     PORT (
         seleccion : in std_logic_vector(long_opcion -1 downto 0);
@@ -23,7 +23,7 @@ BEGin
     process(seleccion)
     begin
         case seleccion is
-            when "000"=>
+            when "0000"=>
                 salida_disp7<="0000110";--E
                 salida_disp6<="0010010";--S
                 salida_disp5<="0001100";--P
@@ -32,7 +32,7 @@ BEGin
                 salida_disp2<="0001000";--A
                 salida_disp1<="1111111";---
                 salida_disp0<="1111111";---
-            when "001"=> --Nivel azúcar> AZUCAR
+            when "0010"=> --Nivel azúcar> AZUCAR
                 salida_disp7<="0001000";--A
                 salida_disp6<="0100100";--Z
                 salida_disp5<="1000001";--U
@@ -41,7 +41,7 @@ BEGin
                 salida_disp2<="1001110";--r
                 salida_disp1<="1111111";--vacio
                 salida_disp0<="1111111";--vacio
-            when "010"=> --corto
+            when "0100"=> --corto
                 salida_disp7<="1000110";--C
                 salida_disp6<="1000000";--o
                 salida_disp5<="1001110";--r
@@ -50,7 +50,7 @@ BEGin
                 salida_disp2<="1111111";--vacio
                 salida_disp1<="1111111";--vacio
                 salida_disp0<="1111111";--vacio 
-            when "011"=> --corto-10seg
+            when "0110"=> --corto-10seg
                 salida_disp7<="1111001";--1
                 salida_disp6<="1000000";--0
                 salida_disp5<="0010010";--S
@@ -59,7 +59,7 @@ BEGin
                 salida_disp2<="1111111";--vacio
                 salida_disp1<="1111111";--vacio
                 salida_disp0<="1111111";--vacio 
-            when "100"=> --largo
+            when "1000"=> --largo
                 salida_disp7<="1000111";--L
                 salida_disp6<="0001000";--A
                 salida_disp5<="1001110";--r
@@ -68,7 +68,7 @@ BEGin
                 salida_disp2<="1111111";--vacio
                 salida_disp1<="1111111";--vacio
                 salida_disp0<="1111111";--vacio 
-            when "101"=> --largo-20seg
+            when "1010"=> --largo-20seg
                 salida_disp7<="0100100";--2
                 salida_disp6<="1000000";--0
                 salida_disp5<="0010010";--S
@@ -77,7 +77,7 @@ BEGin
                 salida_disp2<="1111111";--vacio
                 salida_disp1<="1111111";--vacio
                 salida_disp0<="1111111";--vacio 
-            when "110"=> -- con leche
+            when "1100"=> -- con leche
                 salida_disp7<="1000111";--L
                 salida_disp6<="0000110";--E
                 salida_disp5<="1000110";--C
@@ -86,7 +86,7 @@ BEGin
                 salida_disp2<="1111111";--vacio
                 salida_disp1<="1111111";--vacio
                 salida_disp0<="1111111";--vacio   
-            when "111"=> -- sin leche
+            when "1110"=> -- sin leche
                 salida_disp7<="1001000";--N
                 salida_disp6<="1000000";--O
                 salida_disp5<="1111111";--vacio 
@@ -95,6 +95,24 @@ BEGin
                 salida_disp2<="1000110";--C
                 salida_disp1<="0001001";--H
                 salida_disp0<="0000110";--E
+              when "0001"=> -- sin leche
+                salida_disp7<="1000000";--O
+                salida_disp6<="1001000";--N
+                salida_disp5<="1111111";--vacio 
+                salida_disp4<="1111111";--vacio 
+                salida_disp3<="1111111";--vacio 
+                salida_disp2<="1111111";--vacio 
+                salida_disp1<="1111111";--vacio 
+                salida_disp0<="1111111";--vacio 
+                 when "0011"=> -- sin leche
+                salida_disp7<="0000110";--E
+                salida_disp6<="1000111";--L
+                salida_disp5<="1001111";--I
+                salida_disp4<="0000010";--G
+                salida_disp3<="0000110";--E
+                salida_disp2<="1111111";--vacio 
+                salida_disp1<="1111111";--vacio H
+                salida_disp0<="1111111";--vacio 
             when others=>
                 salida_disp7<="1111111";--vacio
                 salida_disp6<="1111111";--vacio

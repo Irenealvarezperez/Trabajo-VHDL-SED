@@ -34,7 +34,7 @@ use IEEE.numeric_std.all;
 
 entity fsm1 is
     generic (
-        long_opcion:positive:=3
+        long_opcion:positive:=4
     );
     port (
         RESET : in std_logic;
@@ -88,7 +88,7 @@ begin
                 LED_BOMBA<='0';
                 LED_AZUCAR <= '0';
                 LED_ENCENDIDA <= '0';
-                MODO_DISPLAY <= "000";
+                MODO_DISPLAY <= "0001";
                 if EDGE = '1' then
                     START <= '1';
                     DELAY <= to_unsigned(tiempo_preparacion -2, DELAY'length);
@@ -99,7 +99,7 @@ begin
                 START<='0';
                 DELAY<=(others=>'0');
                 LED_ENCENDIDA <= '1';
-                MODO_DISPLAY<="000";
+                MODO_DISPLAY<="0000";
                 if DONE = '1' then
                     next_state <= S2_1;
                 end if;
@@ -108,14 +108,14 @@ begin
                 LED_ENCENDIDA <= '0';
                 START<='1';
                 DELAY <= to_unsigned(tiempo_azucar -2, DELAY'length);
-                MODO_DISPLAY <= "001";
+                MODO_DISPLAY <= "0010";
                 next_state <= S2_2;
 
             when s2_2=>
                 START<='0';
                 DELAY<=(others=>'0');
                 LED_ENCENDIDA <= '0';
-                MODO_DISPLAY <= "001";
+                MODO_DISPLAY <= "0010";
                 if SEL_AZUCAR = '1' then
                     LED_AZUCAR <= '1';
                 end if;
@@ -127,14 +127,14 @@ begin
                 START <= '1';
                 LED_BOMBA<='0';
                 LED_ENCENDIDA <= '0';
-                MODO_DISPLAY <= "000";
+                MODO_DISPLAY <= "0011";
                 if MODOS="01" then
                     next_state <= S3_2;
-                    MODO_DISPLAY <= "010"; --le dice al display el modo
+                    MODO_DISPLAY <= "0100"; --le dice al display el modo
                     DELAY <= to_unsigned(tiempo_corto -2, DELAY'length);
                 end if;
                 if MODOS="10" then
-                    MODO_DISPLAY <= "100"; --le dice al display el modo
+                    MODO_DISPLAY <= "1000"; --le dice al display el modo
                     DELAY <= to_unsigned(tiempo_largo -2, DELAY'length);
                     next_state <= S3_2;
                 end if;
@@ -154,11 +154,11 @@ begin
                 DELAY<=(others=>'0');
                 if MODOS = "01" then
                     LED_BOMBA <= '1';
-                    MODO_DISPLAY <= "011";
+                    MODO_DISPLAY <= "0110";
                 end if;
                 if MODOS = "10" then
                     LED_BOMBA <= '1';
-                    MODO_DISPLAY <= "101";
+                    MODO_DISPLAY <= "1010";
                 end if;
                 if DONE = '1' then
                     next_state <= S5_1;
@@ -178,13 +178,13 @@ begin
                 DELAY<=(others=>'0');
 
                 if SEL_LECHE = '0' then
-                    MODO_DISPLAY <= "111";
+                    MODO_DISPLAY <= "1110";
                 end if;
 
                 if SEL_LECHE ='1' then
                     LED_LECHE <= '1';
                     LED_BOMBA<='1';
-                    MODO_DISPLAY <= "110";
+                    MODO_DISPLAY <= "1100";
                     START <= '1';
                     DELAY <= to_unsigned(tiempo_leche -2, DELAY'length);
                     next_state <= S6;
@@ -204,7 +204,7 @@ begin
                     next_state <= S0;
                 end if;
             when others =>
-                MODO_DISPLAY<= "000";
+                MODO_DISPLAY<= "0000";
                 LED_LECHE<='0';
                 LED_BOMBA<='0';
                 LED_AZUCAR <= '0';
