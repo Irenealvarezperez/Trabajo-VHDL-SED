@@ -24,27 +24,27 @@ BEGin
     begin
         case seleccion is
             when "000"=>
-                salida_disp7<="0111111";---
-                salida_disp6<="0111111";---
-                salida_disp5<="0111111";---
-                salida_disp4<="0111111";---
-                salida_disp3<="0111111";---
-                salida_disp2<="0111111";---
-                salida_disp1<="0111111";---
-                salida_disp0<="0111111";---
+                salida_disp7<="0000110";--E
+                salida_disp6<="0010010";--S
+                salida_disp5<="0001100";--P
+                salida_disp4<="0000110";--E
+                salida_disp3<="1001110";--r
+                salida_disp2<="0001000";--A
+                salida_disp1<="1111111";---
+                salida_disp0<="1111111";---
             when "001"=> --Nivel azúcar> AZUCAR
                 salida_disp7<="0001000";--A
                 salida_disp6<="0100100";--Z
                 salida_disp5<="1000001";--U
                 salida_disp4<="1000110";--C
                 salida_disp3<="0001000";--A
-                salida_disp2<="0001000";--R
+                salida_disp2<="1001110";--r
                 salida_disp1<="1111111";--vacio
                 salida_disp0<="1111111";--vacio
             when "010"=> --corto
                 salida_disp7<="1000110";--C
                 salida_disp6<="1000000";--o
-                salida_disp5<="0001000";--R
+                salida_disp5<="1001110";--r
                 salida_disp4<="0000111";--t
                 salida_disp3<="1000000";--o
                 salida_disp2<="1111111";--vacio
@@ -62,7 +62,7 @@ BEGin
             when "100"=> --largo
                 salida_disp7<="1000111";--L
                 salida_disp6<="0001000";--A
-                salida_disp5<="0001000";--R
+                salida_disp5<="1001110";--r
                 salida_disp4<="0000010";--G
                 salida_disp3<="1000000";--0
                 salida_disp2<="1111111";--vacio
@@ -107,3 +107,4 @@ BEGin
         end case;
     end process;
 end behavioral;
+
