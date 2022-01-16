@@ -6,7 +6,7 @@ END decodificador_tb;
 ARCHITECTURE BEHAVIORAL OF decodificador_tb IS
 
     constant reloj_periodo: time :=20 ns;
-    constant long_opcion:positive:=3;
+    constant long_opcion:positive:=4;
     SIGNAL seleccion : std_logic_vector(long_opcion -1 DOWNTO 0);
     SIGNAL salida_disp0 : std_logic_vector(6 DOWNTO 0);
     SIGNAL salida_disp1 : std_logic_vector(6 DOWNTO 0);
@@ -47,24 +47,26 @@ BEGIN
         );
     tb: PROCESS
     BEGIN
-        seleccion<= "000";
+        seleccion<= "0000";
         wait for 2*reloj_periodo;
-        seleccion<= "001";
+        seleccion<= "1000";
         wait for 2*reloj_periodo;
-        seleccion<="010";
+        seleccion<= "0001";
         wait for 2*reloj_periodo;
-        seleccion<="011";
+        seleccion<="0010";
         wait for 2*reloj_periodo;
-        seleccion<="100";
+        seleccion<="0011";
         wait for 2*reloj_periodo;
-        seleccion<="101";
+        seleccion<="0100";
         wait for 2*reloj_periodo;
-        seleccion<="110";
+        seleccion<="0101";
         wait for 2*reloj_periodo;
-        seleccion<= "111";
+        seleccion<="0110";
+        wait for 2*reloj_periodo;
+        seleccion<= "0111";
         wait for 2*reloj_periodo;
         ASSERT false
-        REPORT "Simulacin finalizada. Test superado."
+        REPORT "Simulacion finalizada. Test superado."
         SEVERITY FAILURE;
     END PROCESS;
 END BEHAVIORAL;
