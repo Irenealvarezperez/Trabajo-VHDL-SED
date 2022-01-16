@@ -8,13 +8,13 @@ entity top is
         num_entradas:positive:=2
     );
     port(
-        entradas: in std_logic_vector (num_entradas -1 downto 0);--Eleción modo café
-        sel_leche: in std_logic;--Selección leche
-        sel_azucar: in std_logic;--Selección azúcar
+        entradas: in std_logic_vector (num_entradas -1 downto 0);--ElecciÃ³n modo cafÃ©
+        sel_leche: in std_logic;--SelecciÃ³n leche
+        sel_azucar: in std_logic;--SelecciÃ³n azÃºcar
         sensor: in std_logic;--Sensor vaso
-        boton_inicio: in std_logic;--botón inicio
+        boton_inicio: in std_logic;--botÃ³n inicio
         clk_entrada: in std_logic;
-        reset_global: in std_logic; --asíncrono
+        reset_global: in std_logic; --asÃ­ncrono
         led_leche: out std_logic;
         led_azucar: out std_logic;
         led_bomba: out std_logic;
@@ -75,19 +75,19 @@ architecture Behavioral of top is
     end component;
     component fsm1
         port (
-            RESET : in std_logic;--reset asíncrono
+            RESET : in std_logic;--reset asÃ­ncrono
             CLK : in std_logic;
-            EDGE : in std_logic;--Botón inicio
-            MODOS : in std_logic_vector(0 TO 1);--Café corto o largo
+            EDGE : in std_logic;--BotÃ³n inicio
+            MODOS : in std_logic_vector(0 TO 1);--CafÃ© corto o largo
             SEL_LECHE: in std_logic;--ELegir leche
-            SEL_AZUCAR: in std_logic;--Elegir azúcar
+            SEL_AZUCAR: in std_logic;--Elegir azÃºcar
             SENSOR: in std_logic;--Sensor vaso
-            MODO_DISPLAY: out std_logic_vector(long_opcion -1 downto 0); --salida para indicarle al display que enseñe el modo
+            MODO_DISPLAY: out std_logic_vector(long_opcion -1 downto 0); --salida para indicarle al display que enseÃ±e el modo
             LED_ENCENDIDA: out std_logic;
             LED_BOMBA: out std_logic;
             LED_LECHE: out std_logic;
             LED_AZUCAR: out std_logic;
-            --Comunicación con la la esclava
+            --ComunicaciÃ³n con la la esclava
             DONE: in std_logic;
             START: out std_logic;
             DELAY : out unsigned (14 downto 0)
@@ -95,11 +95,11 @@ architecture Behavioral of top is
     end component;
     component fsm_esclava
         port (
-            CLK     : in std_logic; --señal de reloj
+            CLK     : in std_logic; --seÃ±al de reloj
             RESET   : in std_logic; --reset activo a nivel alto
-            START   : in std_logic; -- señal de inicio
+            START   : in std_logic; -- seÃ±al de inicio
             DELAY   : in unsigned (14 downto 0); -- tiempo de espera
-            DONE    : out std_logic --señal de fin
+            DONE    : out std_logic --seÃ±al de fin
         );
     end component;
     component decodificador
