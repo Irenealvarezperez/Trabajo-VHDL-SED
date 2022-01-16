@@ -49,21 +49,23 @@ BEGIN
     BEGIN
         seleccion<= "0000";
         wait for 2*reloj_periodo;
-        seleccion<= "1000";
+        seleccion<= "0010";
         wait for 2*reloj_periodo;
-        seleccion<= "0001";
-        wait for 2*reloj_periodo;
-        seleccion<="0010";
-        wait for 2*reloj_periodo;
-        seleccion<="0011";
-        wait for 2*reloj_periodo;
-        seleccion<="0100";
-        wait for 2*reloj_periodo;
-        seleccion<="0101";
+        seleccion<= "0100";
         wait for 2*reloj_periodo;
         seleccion<="0110";
         wait for 2*reloj_periodo;
-        seleccion<= "0111";
+        seleccion<="1000";
+        wait for 2*reloj_periodo;
+        seleccion<="1010";
+        wait for 2*reloj_periodo;
+        seleccion<="1100";
+        wait for 2*reloj_periodo;
+        seleccion<="1110";
+        wait for 2*reloj_periodo;
+        seleccion<= "0001";
+        wait for 2*reloj_periodo;
+        seleccion<= "0011";
         wait for 2*reloj_periodo;
         ASSERT false
         REPORT "Simulacion finalizada. Test superado."
