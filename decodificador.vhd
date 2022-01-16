@@ -2,13 +2,14 @@ LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
 USE ieee.std_logic_arith.ALL;
 USE ieee.std_logic_unsigned.ALL;
+
 ENTITY decodificador IS
     generic (
         long_opcion:positive:=4
     );
     PORT (
-        seleccion : in std_logic_vector(long_opcion -1 downto 0);
-        salida_disp0 : OUT std_logic_vector(6 downto 0);
+        seleccion : in std_logic_vector(long_opcion -1 downto 0);--Selección palabra
+        salida_disp0 : out std_logic_vector(6 downto 0);
         salida_disp1: out std_logic_vector(6 downto 0);
         salida_disp2 : out std_logic_vector(6 downto 0);
         salida_disp3 : out std_logic_vector(6 downto 0);
@@ -23,7 +24,7 @@ BEGin
     process(seleccion)
     begin
         case seleccion is
-            when "0000"=>
+            when "0000"=> --Espera tiempo preparación
                 salida_disp7<="0000110";--E
                 salida_disp6<="0010010";--S
                 salida_disp5<="0001100";--P
@@ -50,7 +51,7 @@ BEGin
                 salida_disp2<="1111111";--vacio
                 salida_disp1<="1111111";--vacio
                 salida_disp0<="1111111";--vacio 
-            when "0110"=> --corto-10seg
+            when "0110"=> --Tiempo corto-10seg
                 salida_disp7<="1111001";--1
                 salida_disp6<="1000000";--0
                 salida_disp5<="0010010";--S
@@ -68,7 +69,7 @@ BEGin
                 salida_disp2<="1111111";--vacio
                 salida_disp1<="1111111";--vacio
                 salida_disp0<="1111111";--vacio 
-            when "1010"=> --largo-20seg
+            when "1010"=> --Tiempo largo-20seg
                 salida_disp7<="0100100";--2
                 salida_disp6<="1000000";--0
                 salida_disp5<="0010010";--S
@@ -95,7 +96,7 @@ BEGin
                 salida_disp2<="1000110";--C
                 salida_disp1<="0001001";--H
                 salida_disp0<="0000110";--E
-              when "0001"=> -- sin leche
+              when "0001"=> -- ON- Máquina encendida
                 salida_disp7<="1000000";--O
                 salida_disp6<="1001000";--N
                 salida_disp5<="1111111";--vacio 
@@ -104,7 +105,7 @@ BEGin
                 salida_disp2<="1111111";--vacio 
                 salida_disp1<="1111111";--vacio 
                 salida_disp0<="1111111";--vacio 
-                 when "0011"=> -- sin leche
+                 when "0011"=> -- Elige modo café
                 salida_disp7<="0000110";--E
                 salida_disp6<="1000111";--L
                 salida_disp5<="1001111";--I
