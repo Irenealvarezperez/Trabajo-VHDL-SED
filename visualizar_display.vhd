@@ -1,35 +1,6 @@
-----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Create Date: 20.12.2021 19:29:52
--- Design Name: 
--- Module Name: visualizar_display - Behavioral
--- Project Name: 
--- Target Devices: 
--- Tool Versions: 
--- Description: 
--- 
--- Dependencies: 
--- 
--- Revision:
--- Revision 0.01 - File Created
--- Additional Comments:
--- 
-----------------------------------------------------------------------------------
-
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
-
--- Uncomment the following library declaration if instantiating
--- any Xilinx leaf cells in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
 
 entity visualizar_display is
     Port (
@@ -65,29 +36,28 @@ begin
             when 0 => seleccion_display<="11111110";--Activa display 0
                 numero_display<=salida_disp0;
 
-            when 1 => seleccion_display<="11111101";
+            when 1 => seleccion_display<="11111101";--Activa display 1
                 numero_display<=salida_disp1;
 
-            when 2 => seleccion_display<="11111011";
+            when 2 => seleccion_display<="11111011";--Activa display 2
                 numero_display<=salida_disp2;
 
-            when 3 => seleccion_display<="11110111";
+            when 3 => seleccion_display<="11110111";--Activa display 3
                 numero_display<=salida_disp3;
 
-            when 4 => seleccion_display<="11101111";
+            when 4 => seleccion_display<="11101111";--Activa display 4
                 numero_display<=salida_disp4;
 
-            when 5 => seleccion_display<="11011111";
+            when 5 => seleccion_display<="11011111";--Activa display 5
                 numero_display<=salida_disp5;
 
-            when 6 => seleccion_display<="10111111";
+            when 6 => seleccion_display<="10111111";--Activa display 6
                 numero_display<=salida_disp6;
 
-            when 7 => seleccion_display<="01111111";
+            when 7 => seleccion_display<="01111111";--Activa display 7
                 numero_display<=salida_disp7;
         end case;
 
     end process;
-
 
 end Behavioral;
