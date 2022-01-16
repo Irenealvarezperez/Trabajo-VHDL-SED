@@ -1,36 +1,7 @@
-----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Create Date: 16.12.2021 11:13:59
--- Design Name: 
--- Module Name: fsm1 - Behavioral
--- Project Name: 
--- Target Devices: 
--- Tool Versions: 
--- Description: 
--- 
--- Dependencies: 
--- 
--- Revision:
--- Revision 0.01 - File Created
--- Additional Comments:
--- 
-----------------------------------------------------------------------------------
-
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.numeric_std.all;
-
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
-
--- Uncomment the following library declaration if instantiating
--- any Xilinx leaf cells in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
 
 entity fsm1 is
     generic (
@@ -52,7 +23,7 @@ entity fsm1 is
         LED_BOMBA: out std_logic; --led indica que esta activa la bomba
         LED_LECHE: out std_logic; --led indica que se desea leche
         LED_AZUCAR: out std_logic; --led indica que se desea azucar
-        START: out std_logic; 
+        START: out std_logic;
         MODO_DISPLAY: out std_logic_vector(long_opcion -1 downto 0);--codigo que indica al display que palabra msotrar
         DELAY : out unsigned (14 downto 0)
     );
@@ -140,7 +111,7 @@ begin
                 end if;
 
             when s3_2 => --estado para detectar vaso
-              
+
                 LED_ENCENDIDA <= '0';
                 LED_BOMBA<='0';
                 if SENSOR='1' then --detecta que se coloca el vaso y pasa al estado de echar cafe
@@ -189,7 +160,7 @@ begin
                     DELAY <= to_unsigned(tiempo_leche -2, DELAY'length);--carga el tiempo de echar leche
                     next_state <= S6;-- se pasa a echar leche
                 end if;
-                
+
                 if DONE = '1' then --si se termina el tiempo de seleecion sin querer leche se vuelve a encendida
                     next_state <= S0;
                 end if;
