@@ -1,23 +1,3 @@
-----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Create Date: 20.12.2021 14:28:42
--- Design Name: 
--- Module Name: divisor_frec - Behavioral
--- Project Name: 
--- Target Devices: 
--- Tool Versions: 
--- Description: 
--- 
--- Dependencies: 
--- 
--- Revision:
--- Revision 0.01 - File Created
--- Additional Comments:
--- 
-----------------------------------------------------------------------------------
-
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
@@ -29,19 +9,16 @@ entity divisor_frec is
     port (
         clk_in : in  std_logic; -- 100 MHz
         reset : in  std_logic;
- 
         clk_out : out  std_logic
     );
 end;
 
 architecture Behavioral of divisor_frec is
 
-   -- constant frecuencia:integer:=freq;
     signal count: integer range 1 to freq;
     signal clk_out_i: std_logic := '0';
 
 BEGIN
-    --frecuencia<=freq;
     frequency_divider: process (clk_in , reset)
     BEGIN
         if reset = '0' then
